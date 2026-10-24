@@ -1,0 +1,1394 @@
+{
+  "Get-LabelPolicy": [
+    {
+      "Name": "Standard-Labelrichtlinie",
+      "Settings": [
+        "[defaultlabelid, d4000002-0000-4000-8000-000000000002]",
+        "[mandatory, false]",
+        "[requiredowngradejustification, true]"
+      ],
+      "Labels": [
+        "Öffentlich",
+        "Intern",
+        "Vertraulich",
+        "Streng vertraulich"
+      ],
+      "Enabled": true
+    }
+  ],
+  "Get-DlpCompliancePolicy": [
+    {
+      "Name": "DLP Basis: Bank- und Personaldaten",
+      "EnforcementPlanes": [],
+      "Mode": "Enable",
+      "Guid": "ad000001-0000-4000-8000-000000000001",
+      "Enabled": true,
+      "Locations": "",
+      "Workload": "Exchange, SharePoint, OneDriveForBusiness"
+    },
+    {
+      "Name": "Copilot: sensible Prompts",
+      "EnforcementPlanes": [
+        "CopilotExperiences"
+      ],
+      "Mode": "TestWithNotifications",
+      "Guid": "ad000002-0000-4000-8000-000000000002",
+      "Enabled": true,
+      "Locations": "[{\"Workload\":\"Applications\",\"Location\":\"470f2276-e011-4e9d-a6ec-20768be3a4b0\",\"Inclusions\":[{\"Type\":\"Tenant\",\"Identity\":\"All\"}]}]",
+      "Workload": "Applications"
+    }
+  ],
+  "Get-DlpComplianceRule": [
+    {
+      "Name": "Bankdaten extern blockieren",
+      "ContentContainsSensitiveInformation": [
+        {
+          "name": "International Banking Account Number (IBAN)"
+        }
+      ],
+      "ParentPolicyName": "DLP Basis: Bank- und Personaldaten",
+      "Disabled": false
+    },
+    {
+      "Name": "IBAN in Prompts",
+      "ContentContainsSensitiveInformation": [
+        {
+          "name": "International Banking Account Number (IBAN)",
+          "minCount": "1"
+        }
+      ],
+      "ParentPolicyName": "Copilot: sensible Prompts",
+      "Disabled": false,
+      "RestrictAccess": [
+        {
+          "value": "Block",
+          "setting": "ExcludeContentProcessing"
+        }
+      ]
+    }
+  ],
+  "Get-ProtectionAlert": [
+    {
+      "Name": "DLP-Treffer an IT-Sicherheit",
+      "NotifyUser": [
+        "it-sicherheit@contoso-maschinenbau.de"
+      ],
+      "Disabled": true,
+      "IsSystemRule": false,
+      "Severity": "Medium",
+      "Category": "DataLossPrevention"
+    },
+    {
+      "Name": "Massenlöschung SharePoint",
+      "NotifyUser": [
+        "it-sicherheit@contoso-maschinenbau.de"
+      ],
+      "Disabled": false,
+      "IsSystemRule": false,
+      "Severity": "High",
+      "Category": "DataGovernance2"
+    },
+    {
+      "Name": "Elevation of Exchange admin privilege",
+      "Category": "PermissionsManagement",
+      "Severity": "Low",
+      "Disabled": false,
+      "IsSystemRule": true
+    }
+  ],
+  "Get-RetentionCompliancePolicy -DistributionDetail True": [
+    {
+      "Name": "Copilot-Interaktionen 1 Jahr",
+      "DistributionStatus": "Success",
+      "Guid": "ae000001-0000-4000-8000-000000000001",
+      "Applications": [
+        "User:M365Copilot"
+      ],
+      "Enabled": true
+    },
+    {
+      "Name": "Teams-Chats 2 Jahre",
+      "DistributionStatus": "Success",
+      "TeamsChatLocation": [
+        "All"
+      ],
+      "Guid": "ae000002-0000-4000-8000-000000000002",
+      "Enabled": true,
+      "Applications": []
+    }
+  ],
+  "Get-RetentionComplianceRule": [
+    {
+      "Name": "Copilot 365 Tage löschen",
+      "RetentionDuration": "365",
+      "RetentionComplianceAction": "Delete",
+      "Policy": "ae000001-0000-4000-8000-000000000001"
+    },
+    {
+      "Name": "Teams 730 Tage",
+      "RetentionDuration": "730",
+      "RetentionComplianceAction": "KeepAndDelete",
+      "Policy": "ae000002-0000-4000-8000-000000000002"
+    }
+  ],
+  "Get-SPOSite -Limit All": [
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-0"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-1"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-2"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-3"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-4"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-5"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-6"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-7"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-8"
+    },
+    {
+      "SensitivityLabel": "d4000003-0000-4000-8000-000000000003",
+      "RestrictContentOrgWideSearch": true,
+      "RestrictedAccessControlGroups": [
+        "b2000009-0000-4000-8000-000000000009"
+      ],
+      "RestrictedAccessControl": true,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-9"
+    },
+    {
+      "SensitivityLabel": "d4000003-0000-4000-8000-000000000003",
+      "RestrictContentOrgWideSearch": true,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-10"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-11"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-12"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-13"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-14"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-15"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-16"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-17"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-18"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-19"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-20"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-21"
+    },
+    {
+      "SensitivityLabel": "d4000003-0000-4000-8000-000000000003",
+      "RestrictContentOrgWideSearch": true,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-22"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-23"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-24"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-25"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-26"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-27"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-28"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-29"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-30"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-31"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-32"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-33"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-34"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-35"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-36"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-37"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-38"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-39"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-40"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-41"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-42"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-43"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-44"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-45"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-46"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-47"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-48"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-49"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-50"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-51"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-52"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-53"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-54"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-55"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-56"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-57"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-58"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-59"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-60"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-61"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-62"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-63"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-64"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-65"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-66"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-67"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-68"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-69"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-70"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-71"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-72"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-73"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-74"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-75"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-76"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-77"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-78"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-79"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-80"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-81"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-82"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-83"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-84"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-85"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-86"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-87"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-88"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-89"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-90"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-91"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-92"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-93"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-94"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-95"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-96"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-97"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-98"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-99"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-100"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-101"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-102"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-103"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-104"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-105"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-106"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-107"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-108"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-109"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-110"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-111"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-112"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-113"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-114"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-115"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-116"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-117"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-118"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-119"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-120"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-121"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-122"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-123"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-124"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-125"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-126"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-127"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/marketing-128"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/hr-129"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/finanzen-130"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/it-131"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/projekt-132"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/vertrieb-133"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/konstruktion-134"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/einkauf-135"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/service-136"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/fertigung-137"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/qualitaet-138"
+    },
+    {
+      "SensitivityLabel": "",
+      "RestrictContentOrgWideSearch": false,
+      "RestrictedAccessControlGroups": [],
+      "RestrictedAccessControl": false,
+      "Url": "https://contosomb.sharepoint.com/sites/logistik-139"
+    }
+  ],
+  "Get-SPODataAccessGovernanceInsight -ReportEntity PermissionedUsers": [
+    {
+      "CountOfSitesInTenant": 140,
+      "Workload": "SharePoint",
+      "CreatedDateTime": "2026-09-04T09:00:00Z",
+      "ReportName": "Site-Berechtigungen SharePoint",
+      "ReportEntity": "PermissionedUsers",
+      "Status": "Completed",
+      "CountOfSitesInReport": 37,
+      "ReportId": "af000001-0000-4000-8000-000000000001"
+    }
+  ],
+  "Get-SPODataAccessGovernanceInsight -ReportEntity EveryoneExceptExternalUsersAtSite": [
+    {
+      "ReportId": "af000002-0000-4000-8000-000000000002",
+      "Status": "Completed",
+      "CreatedDateTime": "2026-09-04T09:00:00Z",
+      "SitesFound": 9,
+      "ReportEntity": "EveryoneExceptExternalUsersAtSite",
+      "Workload": "SharePoint"
+    }
+  ],
+  "Get-SPODataAccessGovernanceInsight -ReportEntity SharingLinks_Anyone": [],
+  "Get-SPODataAccessGovernanceInsight -ReportEntity SensitivityLabelForFiles": [
+    {
+      "ReportId": "af000003-0000-4000-8000-000000000003",
+      "Status": "Completed",
+      "CreatedDateTime": "2026-10-02T09:00:00Z",
+      "SitesFound": 22,
+      "Workload": "SharePoint",
+      "ReportEntity": "SensitivityLabelForFiles",
+      "ReportName": "Dateien mit Label Vertraulich"
+    }
+  ],
+  "Get-AdminPowerAppEnvironment": [
+    {
+      "EnvironmentType": "Default",
+      "EnvironmentName": "Default-b0000001-0000-4000-8000-000000000001",
+      "DisplayName": "Contoso Maschinenbau (default)",
+      "IsDefault": true
+    },
+    {
+      "EnvironmentType": "Production",
+      "EnvironmentName": "b0000002-0000-4000-8000-000000000002",
+      "DisplayName": "Produktion",
+      "IsDefault": false
+    },
+    {
+      "EnvironmentType": "Developer",
+      "EnvironmentName": "b0000003-0000-4000-8000-000000000003",
+      "DisplayName": "Entwicklung",
+      "IsDefault": false
+    },
+    {
+      "EnvironmentType": "Production",
+      "EnvironmentName": "b0000004-0000-4000-8000-000000000004",
+      "DisplayName": "Vertrieb Agents",
+      "IsDefault": false
+    }
+  ],
+  "Get-AdminDlpPolicy": [
+    {
+      "PolicyName": "b9000001-0000-4000-8000-000000000001",
+      "EnvironmentType": "OnlyEnvironments",
+      "DisplayName": "Basis-DLP Produktion",
+      "Environments": [
+        {
+          "name": "b0000002-0000-4000-8000-000000000002"
+        },
+        {
+          "name": "b0000003-0000-4000-8000-000000000003"
+        }
+      ]
+    }
+  ],
+  "PPAPI resourcequery": [
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 0,
+        "groupCount": 0,
+        "entireTenant": false
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "operations": [
+          {
+            "operationId": "GetItems"
+          }
+        ],
+        "connectorId": "shared_sharepointonline",
+        "connectionMode": "maker"
+      },
+      "properties_ownerId": "a1000078-0000-4000-8000-000000000078",
+      "properties_environmentId": "Default-b0000001-0000-4000-8000-000000000001",
+      "properties_displayName": "Angebots-Agent",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "anna.gruber@contoso-maschinenbau.de",
+      "name": "ba000000-0000-4000-8000-000000000000"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 3,
+        "groupCount": 1,
+        "entireTenant": true
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a1000079-0000-4000-8000-000000000079",
+      "properties_environmentId": "Default-b0000001-0000-4000-8000-000000000001",
+      "properties_displayName": "Service-Wissen",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "ben.gruber@contoso-maschinenbau.de",
+      "name": "ba000001-0000-4000-8000-000000000001"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 6,
+        "groupCount": 2,
+        "entireTenant": false
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a100007a-0000-4000-8000-00000000007a",
+      "properties_environmentId": "Default-b0000001-0000-4000-8000-000000000001",
+      "properties_displayName": "Einkauf-Assistent",
+      "properties_authentication": "None",
+      "properties_createdBy": "clara.gruber@contoso-maschinenbau.de",
+      "name": "ba000002-0000-4000-8000-000000000002"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 9,
+        "groupCount": 0,
+        "entireTenant": true
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a100007b-0000-4000-8000-00000000007b",
+      "properties_environmentId": "Default-b0000001-0000-4000-8000-000000000001",
+      "properties_displayName": "HR-Fragen",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "david.gruber@contoso-maschinenbau.de",
+      "name": "ba000003-0000-4000-8000-000000000003"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 12,
+        "groupCount": 1,
+        "entireTenant": false
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a100007c-0000-4000-8000-00000000007c",
+      "properties_environmentId": "b0000004-0000-4000-8000-000000000004",
+      "properties_displayName": "Reisekosten",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "eva.gruber@contoso-maschinenbau.de",
+      "name": "ba000004-0000-4000-8000-000000000004"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 15,
+        "groupCount": 2,
+        "entireTenant": false
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a100007d-0000-4000-8000-00000000007d",
+      "properties_environmentId": "b0000004-0000-4000-8000-000000000004",
+      "properties_displayName": "Schichtplan-Bot",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "felix.gruber@contoso-maschinenbau.de",
+      "name": "ba000005-0000-4000-8000-000000000005"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 18,
+        "groupCount": 0,
+        "entireTenant": false
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "operations": [
+          {
+            "operationId": "GetItems"
+          }
+        ],
+        "connectorId": "shared_sharepointonline",
+        "connectionMode": "maker"
+      },
+      "properties_ownerId": "a100007e-0000-4000-8000-00000000007e",
+      "properties_environmentId": "b0000004-0000-4000-8000-000000000004",
+      "properties_displayName": "Messe-Agent",
+      "properties_authentication": "Generic OAuth 2.0",
+      "properties_createdBy": "greta.gruber@contoso-maschinenbau.de",
+      "name": "ba000006-0000-4000-8000-000000000006"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 21,
+        "groupCount": 1,
+        "entireTenant": false
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a100007f-0000-4000-8000-00000000007f",
+      "properties_environmentId": "b0000004-0000-4000-8000-000000000004",
+      "properties_displayName": "IT-Helpdesk",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "hannes.gruber@contoso-maschinenbau.de",
+      "name": "ba000007-0000-4000-8000-000000000007"
+    },
+    {
+      "properties_sharedWithViewers": {
+        "userCount": 24,
+        "groupCount": 2,
+        "entireTenant": true
+      },
+      "properties_channels": [
+        "Teams",
+        "Microsoft 365 Copilot"
+      ],
+      "properties_powerPlatformConnectors": {
+        "connectionMode": "invoker",
+        "connectorId": "shared_office365"
+      },
+      "properties_ownerId": "a1000080-0000-4000-8000-000000000080",
+      "properties_environmentId": "b0000004-0000-4000-8000-000000000004",
+      "properties_displayName": "Produkt-FAQ",
+      "properties_authentication": "Microsoft Entra",
+      "properties_createdBy": "ida.gruber@contoso-maschinenbau.de",
+      "name": "ba000008-0000-4000-8000-000000000008"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "product": {
+    "name": "Copilot & Agent Readiness",
+    "short": "CAR",
+    "version": "1.0.0-beta.1",
+    "url": "https://govnex.de",
+    "filePrefix": "copilot-agent-readiness"
+  },
+  "scoring": {
+    "minCoverage": 70,
+    "minAreaCoverage": 25,
+    "good": 75,
+    "warn": 45,
+    "scoredStates": ["Pass", "Warn", "Fail"],
+    "excludedFromCoverage": ["NotApplicable", "Info"]
+  },
+  "states": ["Pass", "Warn", "Fail", "NotLicensed", "NoPermission", "Manual", "Unknown", "NotApplicable", "Info"],
+  "readers": {
+    "graph": { "switch": null, "module": null, "default": true },
+    "purview": { "switch": "-Purview", "module": "ExchangeOnlineManagement", "default": false },
+    "sharepoint": { "switch": "-SharePoint", "module": "Microsoft.Online.SharePoint.PowerShell", "default": false },
+    "powerplatform": { "switch": "-PowerPlatform", "module": "Microsoft.PowerApps.Administration.PowerShell", "default": false },
+    "ppapi": { "switch": "-PowerPlatform -PowerPlatformClientId <app id>", "module": null, "default": false },
+    "manual": { "switch": null, "module": null, "default": false }
+  },
+  "graphScopes": {
+    "core": [
+      "Organization.Read.All",
+      "Directory.Read.All",
+      "Policy.Read.All",
+      "Reports.Read.All",
+      "AuditLog.Read.All",
+      "SecurityEvents.Read.All",
+      "SharePointTenantSettings.Read.All",
+      "RoleManagement.Read.Directory",
+      "AuditLogsQuery.Read.All",
+      "InformationProtectionPolicy.Read",
+      "RecordsManagement.Read.All"
+    ],
+    "extended": [
+      "SensitivityLabel.Read",
+      "ReportSettings.Read.All",
+      "AgentIdentity.Read.All"
+    ]
+  },
+  "createsInTenant": [
+    "One Purview audit search job (POST /security/auditLog/queries) for Copilot interactions of the last 7 days. It is a saved search, not a configuration change."
+  ]
+}

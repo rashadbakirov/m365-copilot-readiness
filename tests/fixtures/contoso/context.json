@@ -1,0 +1,47 @@
+{
+  "now": "2026-10-22T09:00:00.0000000Z",
+  "tenant": {
+    "name": "Contoso Maschinenbau GmbH",
+    "id": "00000001-0000-4000-8000-000000000001",
+    "domain": "contoso-maschinenbau.de"
+  },
+  "account": "it-admin@contoso-maschinenbau.de",
+  "roles": [
+    "Global Reader",
+    "Reports Reader",
+    "Compliance Data Administrator"
+  ],
+  "scopes": [
+    "Organization.Read.All",
+    "Directory.Read.All",
+    "Policy.Read.All",
+    "Reports.Read.All",
+    "AuditLog.Read.All",
+    "Group.Read.All",
+    "User.Read.All",
+    "SecurityEvents.Read.All",
+    "SharePointTenantSettings.Read.All",
+    "RoleManagement.Read.Directory",
+    "AuditLogsQuery.Read.All",
+    "InformationProtectionPolicy.Read",
+    "RecordsManagement.Read.All",
+    "SensitivityLabel.Read",
+    "ReportSettings.Read.All",
+    "Application.Read.All",
+    "AgentIdentity.Read.All"
+  ],
+  "readers": {
+    "powerplatform": true,
+    "purview": true,
+    "sharepoint": true,
+    "graph": true,
+    "ppapi": true,
+    "manual": false
+  },
+  "readerNotes": {
+    "sharepoint": "demo fixtures",
+    "ppapi": "demo fixtures",
+    "powerplatform": "demo fixtures",
+    "purview": "demo fixtures"
+  }
+}
